@@ -75,6 +75,7 @@
 	"espIdf.selectConfTarget.title": "Выберите, где сохранить настройки конфигурации",
 	"espIdf.selectCurrentIdfVersion.title": "Выберите текущую версию ESP-IDF",
 	"espIdf.selectFlashMethodAndFlash.title": "Выберите метод флэш-памяти",
+	"espIdf.selectMonitorPort.title": "Выберите порт монитора для использования (com, tty, usbserial)",
 	"espIdf.selectNotificationMode.title": "Выберите режим вывода и уведомления",
 	"espIdf.selectOpenOcdConfigFiles.title": "Выберите конфигурацию платы OpenOCD",
 	"espIdf.selectPort.title": "Выберите порт для использования (COM, tty, usbserial)",
