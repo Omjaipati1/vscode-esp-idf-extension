@@ -1,0 +1,66 @@
+/**
+ * BNO055 with SoftwareWire Example
+ * 
+ * Demonstrates how to use the above "Adafruit_BNO055" class
+ * with arbitrary SDA and SCL pins using SoftwareWire.
+ * 
+ * Wiring:
+ *   - BNO055 SDA -> Arduino pin 8
+ *   - BNO055 SCL -> Arduino pin 7
+ *   - BNO055 VIN -> 3.3V
+ *   - BNO055 GND -> GND
+ * 
+ * Install "SoftwareWire" and "Adafruit Unified Sensor" libraries.
+ * (We do NOT use "Adafruit_BusIO" here, so no conflict.)
+ */
+
+#include <Arduino.h>
+#include <SoftwareWire.h>    // For software I2C
+#include "Adafruit_BNO055.h" // Our custom BNO055 library above
+
+// Choose your pins for software I2C
+#define BNO_SDA_PIN 8
+#define BNO_SCL_PIN 7
+
+// Create a SoftwareWire object
+SoftwareWire myWire(BNO_SDA_PIN, BNO_SCL_PIN);
+
+// Instantiate BNO055 at address 0x28 on software I2C
+Adafruit_BNO055 bno(55, BNO055_ADDRESS_A, &myWire);
+
+void setup() {
+  Serial.begin(115200);
+  while (!Serial) { /* some boards need this */ }
+
+  Serial.println("Initializing SoftwareWire on pins 8=SDA, 7=SCL...");
+  myWire.begin(); // Start software I2C
+
+  Serial.println("Trying to detect BNO055...");
+  if (!bno.begin()) {
+    Serial.println("No BNO055 detected. Check wiring!");
+    while (1) { delay(10); }
+  }
+
+  Serial.println("BNO055 found! Using external crystal...");
+  bno.setExtCrystalUse(true);
+
+  Serial.println("Setup complete!");
+  delay(1000);
+}
+
+void loop() {
+  // Read Euler orientation (heading, roll, pitch) from BNO
+  sensors_event_t orientationData;
+  if (bno.getEvent(&orientationData)) {
+    Serial.print("Heading: ");
+    Serial.print(orientationData.orientation.x, 2);
+    Serial.print("  Roll: ");
+    Serial.print(orientationData.orientation.y, 2);
+    Serial.print("  Pitch: ");
+    Serial.println(orientationData.orientation.z, 2);
+  } else {
+    Serial.println("Error reading BNO055 orientation!");
+  }
+
+  delay(1000);
+}
